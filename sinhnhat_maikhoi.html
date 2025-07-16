@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 Chúc mừng sinh nhật Mai Khôi 🎂</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(#ffd6e8, #ffeef5);
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+    }
+
+    .typing {
+      color: #ff4081;
+      font-size: 2em;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #ff4081;
+      width: 24ch;
+      animation: typing 4s steps(24), blink .75s step-end infinite;
+      margin: 100px auto;
+      text-align: center;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 24ch }
+    }
+
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: #ff4081 }
+    }
+
+    .btn {
+      display: block;
+      margin: 50px auto;
+      background: #ff4081;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2em;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #e91e63;
+    }
+
+    .heart {
+      position: fixed;
+      top: -10px;
+      font-size: 14px;
+      color: #ff4081;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="typing">Hế luuuu Mai Khôi 🐣</div>
+<button class="btn" onclick="alert('Chúc Mai Khôi tuổi 13 thật vui vẻ nhéee 🎂💖')">🎁 Nhận quà</button>
+
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/03/08/audio_b3cfa42e77.mp3?filename=happy-birthday-143766.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+  // Happy birthday falling text
+  function createFallingText() {
+    const text = document.createElement('div');
+    text.classList.add('heart');
+    text.style.left = Math.random() * 100 + 'vw';
+    text.style.animationDuration = 2 + Math.random() * 3 + 's';
+    text.innerText = 'Happy Birthday 🎉';
+    document.body.appendChild(text);
+    setTimeout(() => text.remove(), 5000);
+  }
+
+  setInterval(createFallingText, 300);
+
+  // Fireworks effect
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  const particles = [];
+
+  function createFirework() {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height / 2;
+    const count = 100;
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x,
+        y,
+        vx: Math.cos((2 * Math.PI * i) / count) * (Math.random() * 4),
+        vy: Math.sin((2 * Math.PI * i) / count) * (Math.random() * 4),
+        alpha: 1,
+        color: `hsl(${Math.random() * 360}, 100%, 50%)`
+      });
+    }
+  }
+
+  function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.1)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.01;
+      if (p.alpha <= 0) particles.splice(i, 1);
+      else {
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    });
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  setInterval(createFirework, 1200);
+  animate();
+</script>
+
+</body>
+</html>
